@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReelTalk — Movie Reviews</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🎭 ReelTalk</div>
+    <div class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search a movie to review…"/>
+      <button id="searchBtn">🔍</button>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" data-tab="browse">Browse</button>
+      <button class="tab-btn" data-tab="myreviews">My Reviews <span id="reviewBadge" class="badge">0</span></button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Your Cinema.<br/>Your Voice.</h1>
+      <p>Discover movies. Write honest reviews. Build your watchlist.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span id="statReviews">0</span><small>Reviews Written</small></div>
+      <div class="stat"><span id="statMovies">0</span><small>Movies Reviewed</small></div>
+      <div class="stat"><span id="statAvg">—</span><small>Avg Rating</small></div>
+    </div>
+  </div>
+
+  <!-- BROWSE SECTION -->
+  <main id="browseSection" class="section active">
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="popular">🔥 Popular</button>
+      <button class="filter-btn" data-cat="top_rated">⭐ Top Rated</button>
+      <button class="filter-btn" data-cat="upcoming">🎞 Upcoming</button>
+      <button class="filter-btn" data-cat="now_playing">🎭 Now Playing</button>
+    </div>
+    <div class="grid" id="movieGrid"></div>
+    <div class="load-wrap">
+      <button id="loadMoreBtn" class="btn-load">Load More</button>
+    </div>
+  </main>
+
+  <!-- MY REVIEWS SECTION -->
+  <main id="reviewsSection" class="section">
+    <div class="reviews-header">
+      <h2>📝 My Reviews</h2>
+      <select id="sortReviews" class="sort-select">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="highest">Highest Rated</option>
+        <option value="lowest">Lowest Rated</option>
+      </select>
+    </div>
+    <div id="myReviewsGrid" class="reviews-grid"></div>
+  </main>
+
+  <!-- REVIEW MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="modal" id="modal">
+      <button class="close-btn" id="closeModal">✕</button>
+
+      <!-- Movie Info Panel -->
+      <div class="modal-left">
+        <img id="mPoster" src="" alt=""/>
+        <div class="modal-movie-info">
+          <h2 id="mTitle"></h2>
+          <div class="modal-meta" id="mMeta"></div>
+          <p id="mOverview"></p>
+        </div>
+      </div>
+
+      <!-- Review Panel -->
+      <div class="modal-right">
+        <div class="review-existing" id="reviewExisting" style="display:none">
+          <div class="existing-header">
+            <h3>Your Review</h3>
+            <div class="existing-actions">
+              <button class="btn-edit" id="editReviewBtn">✏ Edit</button>
+              <button class="btn-delete" id="deleteReviewBtn">🗑 Delete</button>
+            </div>
+          </div>
+          <div class="existing-stars" id="existingStars"></div>
+          <p class="existing-text" id="existingText"></p>
+          <small class="existing-date" id="existingDate"></small>
+        </div>
+
+        <div class="review-form" id="reviewForm">
+          <h3 id="formTitle">Write Your Review</h3>
+          <p class="form-sub">How would you rate this movie?</p>
+
+          <!-- Star Rating -->
+          <div class="star-input" id="starInput">
+            <span class="star" data-v="1">★</span>
+            <span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span>
+            <span class="star" data-v="4">★</span>
+            <span class="star" data-v="5">★</span>
+          </div>
+          <div class="rating-label" id="ratingLabel">Click a star to rate</div>
+
+          <!-- Review fields -->
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="reviewerName" placeholder="e.g. Sujal M." maxlength="40"/>
+          </div>
+          <div class="form-group">
+            <label>Review Title</label>
+            <input type="text" id="reviewTitle" placeholder="e.g. A Cinematic Masterpiece" maxlength="80"/>
+          </div>
+          <div class="form-group">
+            <label>Your Review</label>
+            <textarea id="reviewText" placeholder="Share your thoughts about this movie…" rows="5" maxlength="1000"></textarea>
+            <div class="char-count"><span id="charCount">0</span>/1000</div>
+          </div>
+          <div class="form-group tags-group">
+            <label>Tags (optional)</label>
+            <div class="tag-options">
+              <button type="button" class="tag-opt" data-tag="Must Watch">Must Watch</button>
+              <button type="button" class="tag-opt" data-tag="Overrated">Overrated</button>
+              <button type="button" class="tag-opt" data-tag="Hidden Gem">Hidden Gem</button>
+              <button type="button" class="tag-opt" data-tag="Slow Burn">Slow Burn</button>
+              <button type="button" class="tag-opt" data-tag="Mind-blowing">Mind-blowing</button>
+              <button type="button" class="tag-opt" data-tag="Family Friendly">Family Friendly</button>
+            </div>
+          </div>
+
+          <button class="btn-submit" id="submitReview">Publish Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">
+    Built by <strong>Sujal Mandal</strong> · Powered by TMDB API ·
+    <a href="https://github.com/sujalmandal" target="_blank">GitHub</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
